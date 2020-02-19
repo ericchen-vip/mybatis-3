@@ -45,6 +45,7 @@ import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 基础的执行器
  * @author Clinton Begin
  */
 public abstract class BaseExecutor implements Executor {
@@ -55,7 +56,7 @@ public abstract class BaseExecutor implements Executor {
   protected Executor wrapper;
 
   protected ConcurrentLinkedQueue<DeferredLoad> deferredLoads;
-  protected PerpetualCache localCache;
+  protected PerpetualCache localCache;//本地缓存,也就是一级缓存
   protected PerpetualCache localOutputParameterCache;
   protected Configuration configuration;
 

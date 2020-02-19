@@ -46,6 +46,7 @@ public class SqlSessionFactoryBuilder {
 
   public SqlSessionFactory build(Reader reader, String environment, Properties properties) {
     try {
+      //XML 配置文件的构架器
       XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);
       return build(parser.parse());
     } catch (Exception e) {
@@ -87,7 +88,7 @@ public class SqlSessionFactoryBuilder {
       }
     }
   }
-    
+
   public SqlSessionFactory build(Configuration config) {
     return new DefaultSqlSessionFactory(config);
   }

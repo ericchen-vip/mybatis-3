@@ -83,7 +83,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
-    super(new Configuration());
+    super(new Configuration());//TODO EC 所有的配置文件都解析后都存放在这个 Configurtaion 里
     ErrorContext.instance().resource("SQL Mapper Configuration");
     this.configuration.setVariables(props);
     this.parsed = false;
@@ -92,22 +92,22 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   public Configuration parse() {
-    if (parsed) {
+    if (parsed) {//如果解析过了, 证明只会解析一次配置文件
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
-
+//解析配置文件
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
       propertiesElement(root.evalNode("properties"));
-      Properties settings = settingsAsProperties(root.evalNode("settings"));
-      loadCustomVfs(settings);
-      typeAliasesElement(root.evalNode("typeAliases"));
-      pluginElement(root.evalNode("plugins"));
+      Properties settings = settingsAsProperties(root.evalNode("settings"));//解析所有的设置
+      loadCustomVfs(settings);  //加载本地或者远程的文件
+      typeAliasesElement(root.evalNode("typeAliases"));// 解析所有 typeAliases 的标签,类型的别名
+      pluginElement(root.evalNode("plugins")); //解析插件
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
@@ -115,7 +115,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       // read it after objectFactory and objectWrapperFactory issue #631
       environmentsElement(root.evalNode("environments"));
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
-      typeHandlerElement(root.evalNode("typeHandlers"));
+      typeHandlerElement(root.evalNode("typeHandlers")); // JAVA类型和 MyBatis 类型相互转换
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -276,7 +276,9 @@ public class XMLConfigBuilder extends BaseBuilder {
       for (XNode child : context.getChildren()) {
         String id = child.getStringAttribute("id");
         if (isSpecifiedEnvironment(id)) {
+          //事务工厂
           TransactionFactory txFactory = transactionManagerElement(child.evalNode("transactionManager"));
+          //数据源工厂
           DataSourceFactory dsFactory = dataSourceElement(child.evalNode("dataSource"));
           DataSource dataSource = dsFactory.getDataSource();
           Environment.Builder environmentBuilder = new Environment.Builder(id)

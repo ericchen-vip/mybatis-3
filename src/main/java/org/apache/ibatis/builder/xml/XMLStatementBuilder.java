@@ -36,7 +36,7 @@ import org.apache.ibatis.session.Configuration;
 /**
  * @author Clinton Begin
  */
-public class XMLStatementBuilder extends BaseBuilder {
+public class  XMLStatementBuilder extends BaseBuilder {
 
   private final MapperBuilderAssistant builderAssistant;
   private final XNode context;

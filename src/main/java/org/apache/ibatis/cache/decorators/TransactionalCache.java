@@ -27,6 +27,7 @@ import org.apache.ibatis.logging.LogFactory;
 
 /**
  * The 2nd level cache transactional buffer.
+ * 二级缓存的事务 buffer
  * 
  * This class holds all cache entries that are to be added to the 2nd level cache during a Session.
  * Entries are sent to the cache when commit is called or discarded if the Session is rolled back. 

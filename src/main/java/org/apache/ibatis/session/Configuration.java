@@ -140,7 +140,7 @@ public class Configuration {
   protected Class<?> configurationFactory;
 
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
-  protected final InterceptorChain interceptorChain = new InterceptorChain();
+  protected final InterceptorChain interceptorChain = new InterceptorChain();  // 拦截器链
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
   protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
   protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
@@ -569,13 +569,14 @@ public class Configuration {
     executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
     Executor executor;
     if (ExecutorType.BATCH == executorType) {
-      executor = new BatchExecutor(this, transaction);
+      executor = new BatchExecutor(this, transaction); //TODO EC 批量执行执行器
     } else if (ExecutorType.REUSE == executorType) {
-      executor = new ReuseExecutor(this, transaction);
+      executor = new ReuseExecutor(this, transaction); //TODO EC 缓存了 Statement 的执行器
     } else {
-      executor = new SimpleExecutor(this, transaction);
+      executor = new SimpleExecutor(this, transaction); //TODO EC
     }
     if (cacheEnabled) {
+      //TODO EC 通过装饰器模式对 Executor 进行包装
       executor = new CachingExecutor(executor);
     }
     executor = (Executor) interceptorChain.pluginAll(executor);

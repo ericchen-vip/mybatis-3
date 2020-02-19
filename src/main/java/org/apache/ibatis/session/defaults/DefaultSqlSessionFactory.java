@@ -32,7 +32,7 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 
 /**
- * @author Clinton Begin
+ * @author Clinton Begi n
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
@@ -93,6 +93,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
       final Environment environment = configuration.getEnvironment();
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      //TODO EC 执行器
       final Executor executor = configuration.newExecutor(tx, execType);
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
